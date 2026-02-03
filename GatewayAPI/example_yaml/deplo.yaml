@@ -1,0 +1,62 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: setup
+  namespace: dev
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: setup
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1 
+      maxSurge: 1
+  minReadySeconds: 10
+  template:
+    metadata:
+      labels:
+        app: setup
+    spec:
+
+      securityContext:
+        runAsUser: 0
+        runAsGroup: 0
+      volumes:
+        - name: setup-secret
+          secret:
+            secretName: setup-secret
+            defaultMode: 420
+            optional: false
+      containers:
+        - name: setup
+          image: ghcr.io/maplegraph/setup:latest
+          command:
+            - sleep
+            - '500'
+          ports:
+            - name: http
+              containerPort: 8080
+              protocol: TCP
+          resources: {}
+          securityContext:
+            allowPrivilegeEscalation: true
+          volumeMounts:
+            - name: setup-secret
+              readOnly: true
+              mountPath: /app/.env
+              subPath: .env
+              mountPropagation: None
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          imagePullPolicy: Always
+      restartPolicy: Always
+      terminationGracePeriodSeconds: 30
+      dnsPolicy: ClusterFirst
+      automountServiceAccountToken: true
+      shareProcessNamespace: false
+      imagePullSecrets:
+        - name: ghcr-secret
+      schedulerName: default-scheduler
+      enableServiceLinks: true
