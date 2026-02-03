@@ -1,2 +1,2 @@
-# GCP
-learn GCP with yusuf 
+# GCP 
+learn GCP GKE with yusuf using Terraform
