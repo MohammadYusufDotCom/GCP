@@ -1,0 +1,22 @@
+project_id                    = "YOUR_PROJECT_ID"
+environment                   = "dev"
+region                        = "us-central1"
+vpc_cidr                      = "10.12.0.0/16"
+subnet_cidr                   = "10.12.0.0/24"
+subnet_secondary_cidr_pod     = "10.12.16.0/20"
+subnet_secondary_cidr_service = "10.12.32.0/20"
+proxy_only_subnet_cidr        = "10.12.64.0/24"
+cluster_name                  = "gke-cluster-dev-01"
+min_node_count                = 2
+max_node_count                = 4
+machine_type                  = "e2-medium"
+disk_size_gb                  = 30
+vpc_name                      = "gke-vpc"
+ssh_allowed_cidr              = IDR
+# gke_allow_access_cidr       = "35.235.240.0/20" # "0.0.0.0/0" for cluster access use vpc cidr  or for using IAP (identity aware proxy) use ip-range -> 35.235.240.0/20 
+gke_master_ipv4_cidr          = "GENERAL" #"172.16.0.0/28"
+
+## custum ip for accessing GKE control plane
+yusuf_ip = {
+  Yusuf_home   = "YOUR_IP"
+}
